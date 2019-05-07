@@ -21,7 +21,7 @@ Crie o arquivo .env
 $ touch .env
 ```
 
-Copie e cole as linhas abaixo
+Copie e cole as linhas abaixo no .env
 ```
 POSTGRES_USER=perfilapi
 POSTGRES_PASSWORD=perfilapi123
