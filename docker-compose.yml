@@ -1,14 +1,27 @@
-version: '3'
+version: '3.5'
 
 services:
-  db:
-    image: postgres
-  web:
+  db-perfil:
+    image: postgres:latest
+    env_file:
+      - .env
+    networks:
+      - proxynet
+
+  web-perfil:
     build: .
-    command: python manage.py runserver 0.0.0.0:8000
+    command: /code/runserver.sh
     volumes:
       - .:/code
     ports:
-      - "8000:8000"
+      - "8002:8000"
     depends_on:
-      - db
+      - db-perfil
+    env_file:
+      - .env
+    networks:
+      - proxynet
+
+networks:
+  proxynet:
+    name: EstudePlus-network
