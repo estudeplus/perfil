@@ -7,3 +7,5 @@ def create_student(resquest):
 
     if form.is_valid():
         form.save()
+    
+    return render(resquest, 'student-form.html', {'form': form})
