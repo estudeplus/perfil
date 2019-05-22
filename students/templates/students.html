@@ -7,6 +7,15 @@
     <title>Document</title>
 </head>
 <body>
-    <h1>Teste</h1>
+    <h1>Pagina inicial</h1>
+    <ul>
+        {% for student in students %}
+            <a href="{% url 'update_student' student.id %}">
+                <li>{{ student.nome }}</li>
+            </a>
+    {% endfor %}
+    </ul>
+
+    <a href="{% url 'create_students' %}">New Student</a>
 </body>
 </html>
