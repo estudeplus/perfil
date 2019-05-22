@@ -7,15 +7,10 @@
     <title>Document</title>
 </head>
 <body>
-    <h1>New Student</h1>
-    <form method="POST">
+    <form method="post">
         {% csrf_token %}
-        {{ form }}
-        <button type="submit">Save</button>
+        <h2>Tem certeza que quer remover o aluno {{ student.nome }}?</h2>
+        <button type="submit">Confirmar</button>
     </form>
-    
-    {% if student %}
-        <a href="{% url 'delete_student' student.id %}">Delete</a>
-    {% endif %}
 </body>
-</html> 
+</html>
