@@ -2,12 +2,15 @@ from django.shortcuts import render, redirect
 from .models import Student
 from .forms import StudentForm
 from rest_framework import viewsets
-from .serializers import StudentSerializer
+from .serializers import StudentLoginSerializer, StudentFieldsSerializer
 
-class StudentViewSet(viewsets.ModelViewSet):
-
+class StudentLoginViewSet(viewsets.ModelViewSet):
     queryset = Student.objects.all()
-    serializer_class = StudentSerializer
+    serializer_class = StudentLoginSerializer
+
+class StudentFieldsViewSet(viewsets.ModelViewSet):
+    queryset = Student.objects.all()
+    serializer_class = StudentFieldsSerializer
 
 def list_students(request):
     students = Student.objects.all()
