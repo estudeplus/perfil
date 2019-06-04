@@ -1,5 +1,6 @@
 from django.urls import path
-from .views import list_students, create_student, update_student, delete_student
+from django.conf.urls import url
+from .views import list_students, create_student, update_student, delete_student, StudentViewSet
 
 urlpatterns = [
     path('', list_students, name='list_students'),
