@@ -26,6 +26,11 @@ class StudentRegisterViewSet(viewsets.ModelViewSet):
             serializer.save()
             return Response(serializer.data, status.HTTP_201_CREATED)
 
+class StudentForm(StudentForm):
+    class Meta:
+        model = Student
+        fields = ['nome', 'matricula', 'email', 'senha']
+
 def list_students(request):
     students = Student.objects.all()
     return render(request, 'students.html', {'students': students})
