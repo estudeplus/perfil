@@ -1,16 +1,30 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from .models import Student
 from .forms import StudentForm
-from rest_framework import viewsets
-from .serializers import StudentLoginSerializer, StudentFieldsSerializer
+from rest_framework import viewsets, status
+from rest_framework.response import Response
+from .serializers import StudentPreRegisterSerializer, StudentRegisterSerializer
 
-class StudentLoginViewSet(viewsets.ModelViewSet):
+class StudentPreRegisterViewSet(viewsets.ModelViewSet):
     queryset = Student.objects.all()
-    serializer_class = StudentLoginSerializer
+    serializer_class = StudentPreRegisterSerializer
 
-class StudentFieldsViewSet(viewsets.ModelViewSet):
+class StudentRegisterViewSet(viewsets.ModelViewSet):
     queryset = Student.objects.all()
-    serializer_class = StudentFieldsSerializer
+    serializer_class = StudentRegisterSerializer
+
+    def get_object(self):
+        matricula = self.request.data['matricula']
+        student = get_object_or_404(Student, matricula=matricula)
+        return student
+    
+    def create(self, request, *args, **kwargs):
+        student = self.get_object()
+        serializer = StudentRegisterSerializer(student, data=request.data) 
+
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status.HTTP_201_CREATED)
 
 def list_students(request):
     students = Student.objects.all()

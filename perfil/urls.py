@@ -1,11 +1,11 @@
 from django.contrib import admin
 from django.urls import path, include
-from students.views import StudentLoginViewSet, StudentFieldsViewSet
+from students.views import StudentPreRegisterViewSet, StudentRegisterViewSet
 from rest_framework import routers
 
 router = routers.DefaultRouter()
-router.register(r'login', StudentLoginViewSet)
-router.register(r'fields', StudentFieldsViewSet)
+router.register(r'pre-register', StudentPreRegisterViewSet)
+router.register(r'register', StudentRegisterViewSet)
 
 urlpatterns = [
     path('', include(router.urls)),

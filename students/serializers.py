@@ -1,14 +1,14 @@
 from rest_framework import serializers
 from .models import Student
 
-class StudentLoginSerializer(serializers.ModelSerializer):
+class StudentPreRegisterSerializer(serializers.ModelSerializer):
     class Meta:
 
         model = Student
-        fields = ('id', 'email', 'senha')
+        fields = ('matricula',)
 
-class StudentFieldsSerializer(serializers.ModelSerializer):
+class StudentRegisterSerializer(serializers.ModelSerializer):
     class Meta:
 
         model = Student
-        fields = '__all__'
+        fields = ('matricula', 'nome', 'email', 'senha')
