@@ -4,6 +4,11 @@ from .forms import StudentForm
 from rest_framework import viewsets
 from .serializers import StudentLoginSerializer, StudentFieldsSerializer
 
+class StudentForm(StudentForm):
+    class Meta:
+        model = Student
+        fields = ['nome', 'matricula', 'email', 'senha']
+
 class StudentLoginViewSet(viewsets.ModelViewSet):
     queryset = Student.objects.all()
     serializer_class = StudentLoginSerializer
