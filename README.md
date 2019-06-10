@@ -1,6 +1,8 @@
 # Microserviço de Perfil
 Gerenciamento de perfil
 
+[![Build Status](https://travis-ci.org/estudeplus/perfil.svg?branch=master)](https://travis-ci.org/estudeplus/perfil)
+
 # Getting started
 
 Antes de tudo, você precisa instalar [docker](https://docs.docker.com/install/) e [docker-compose](https://docs.docker.com/compose/install/).
