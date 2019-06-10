@@ -12,6 +12,7 @@ env:
   - DEPLOYMENT=profile-deploy
   - CONTAINER=profile-container
   - CLOUDSDK_CORE_DISABLE_PROMPTS=1
+  - secure: tFFkcYZwmsY4/aJKyqQnPT7Ia2edq0N9SyPHOzdDVfX3cq2vD9smNauDx32RFfny+lxmd+MkMl15EJ5l1BjpQs738ksQVDmbKav8XC+awRHr+9tJmMcVW62vKlEgsV7NveMeoh043pofqleJaF6Xp6C5nlR1weP4+dW15998tZ5Sn4HQJC5ZoDN1QpcgWMJ2cLzQrFwfQHvp354e4GWOIIm5H/tGAb6kqwMnCb4urPSVwJVlJjGGtVWu7V30dAssu+54C4mmcXfqTvxf52RxHWUZU0k1z1I0R2NEig6aj5ltOO0nqtlm4gc6gU1nOkgsVHMf3jIbzaSvl5leiuwQZ3tAyDdhhNgiYHxkp69iptw6CoDudRSxtJMq5L87XP28ND/TLFBytbvuBjvHwMYSe3DHiWRB9ux2kfzZJRofyR7GXY232hQHJPY2lggZe+PNi1OnrfG1ik0sklYTtEoz5rQm+vwaQiJYlewq8xbVK6pUaTcn1J6rpi9gCHmGZ35zd/+FBvRsUS0ikamgFUYqLIg9bnQWfENuVKwVuta/Jt680hwjbxodF9dtidmHSiWnDC/Uctam2HrzK4zse3jLIjTHaBzgC0t36f8e3ll5MuSZM9W3YkZRsRQ9M8/3uBl1mgXgj2HqyHQU+5LNW5cwcBjCthk1KXsqIMARpUqLrpM=
 script:
 - docker build -t ${ORG_NAME}/${IMAGE_NAME}:$TRAVIS_COMMIT .
 before_deploy:
@@ -24,9 +25,9 @@ deploy:
   script: chmod +x deploy/deploy.sh && bash deploy/deploy.sh
   skip_cleanup: true
   on:
-    branch: feat#16/deploy-cicd
+    branch: master 
 notifications:
   email: false
 before_install:
 - openssl aes-256-cbc -K $encrypted_c495b0e62ab5_key -iv $encrypted_c495b0e62ab5_iv
-  -in deploy/gcloud-key.json.enc -out deploy/gcloud-key.json -d
+  -in $TRAVIS_BUILD_DIR/deploy/gcloud-key.json.enc -out $TRAVIS_BUILD_DIR/deploy/gcloud-key.json -d
