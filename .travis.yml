@@ -1,0 +1,32 @@
+sudo: required
+services:
+- docker
+cache:
+  directories:
+  - "$HOME/google-cloud-sdk/"
+env:
+  global:
+  - GOOGLE_APPLICATION_CREDENTIALS=$TRAVIS_BUILD_DIR/deploy/gcloud-key.json
+  - ORG_NAME=estudeplus
+  - IMAGE_NAME=profile-manager
+  - DEPLOYMENT=profile-deploy
+  - CONTAINER=profile-container
+  - CLOUDSDK_CORE_DISABLE_PROMPTS=1
+script:
+- docker build -t ${ORG_NAME}/${IMAGE_NAME}:$TRAVIS_COMMIT .
+before_deploy:
+- if [ ! -d "$HOME/google-cloud-sdk/bin" ]; then rm -rf $HOME/google-cloud-sdk; curl
+  https://sdk.cloud.google.com | bash > /dev/null; fi
+- source $HOME/google-cloud-sdk/path.bash.inc
+- gcloud --quiet components update kubectl
+deploy:
+- provider: script
+  script: chmod +x deploy/deploy.sh && bash deploy/deploy.sh
+  skip_cleanup: true
+  on:
+    branch: feat#16/deploy-cicd
+notifications:
+  email: false
+before_install:
+- openssl aes-256-cbc -K $encrypted_c495b0e62ab5_key -iv $encrypted_c495b0e62ab5_iv
+  -in deploy/gcloud-key.json.enc -out deploy/gcloud-key.json -d
