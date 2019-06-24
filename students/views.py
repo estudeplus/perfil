@@ -4,6 +4,7 @@ from .forms import StudentForm
 from rest_framework import viewsets, status
 from rest_framework.response import Response
 from .serializers import StudentPreRegisterSerializer, StudentRegisterSerializer
+from django.urls import reverse_lazy
 
 from django.views.generic import ListView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
@@ -17,8 +18,8 @@ class StudentRegisterViewSet(viewsets.ModelViewSet):
     serializer_class = StudentRegisterSerializer
 
     def get_object(self):
-        matricula = self.request.data['matricula']
-        student = get_object_or_404(Student, matricula=matricula)
+        student_id = self.request.data['student_id']
+        student = get_object_or_404(Student, student_id=student_id)
         return student
     
     def create(self, request, *args, **kwargs):
@@ -32,18 +33,24 @@ class StudentRegisterViewSet(viewsets.ModelViewSet):
 class StudentForm(StudentForm):
     class Meta:
         model = Student
-        fields = ['nome', 'matricula', 'email', 'senha']
+        fields = ['name', 'student_id', 'email', 'password']
 
 class StudentList(ListView):
     model = Student
 
 class StudentCreate(CreateView):
     model = Student
-    fields = ['nome','matricula','email','senha']
+    fields = ['name','student_id','email','password']
+
+    success_url = reverse_lazy('list_students')
 
 class StudentUpdate(UpdateView):
     model = Student
-    fields = ['nome','email','senha']
+    fields = ['name','email','password']
+
+    success_url = reverse_lazy('list_students')
 
 class StudentDelete(DeleteView):
     model = Student
+
+    success_url = reverse_lazy('list_students')

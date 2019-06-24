@@ -5,10 +5,10 @@ class StudentPreRegisterSerializer(serializers.ModelSerializer):
     class Meta:
 
         model = Student
-        fields = ('matricula',)
+        fields = ('student_id',)
 
 class StudentRegisterSerializer(serializers.ModelSerializer):
     class Meta:
 
         model = Student
-        fields = ('matricula', 'nome', 'email', 'senha')
+        fields = ('student_id', 'name', 'email', 'password')
