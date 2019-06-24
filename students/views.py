@@ -5,6 +5,9 @@ from rest_framework import viewsets, status
 from rest_framework.response import Response
 from .serializers import StudentPreRegisterSerializer, StudentRegisterSerializer
 
+from django.views.generic import ListView
+from django.views.generic.edit import CreateView, UpdateView, DeleteView
+
 class StudentPreRegisterViewSet(viewsets.ModelViewSet):
     queryset = Student.objects.all()
     serializer_class = StudentPreRegisterSerializer
@@ -31,6 +34,21 @@ class StudentForm(StudentForm):
         model = Student
         fields = ['nome', 'matricula', 'email', 'senha']
 
+class StudentList(ListView):
+    model = Student
+
+class StudentCreate(CreateView):
+    model = Student
+    fields = ['nome','matricula','email','senha']
+
+class StudentUpdate(UpdateView):
+    model = Student
+    fields = ['nome','email','senha']
+
+class StudentDelete(DeleteView):
+    model = Student
+
+"""
 def list_students(request):
     students = Student.objects.all()
     return render(request, 'students.html', {'students': students})
@@ -62,3 +80,4 @@ def delete_student(request, id):
         return redirect('list_students')
 
     return render(request, 'confirm_delete.html', {'student': student})
+"""
