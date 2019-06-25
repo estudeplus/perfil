@@ -4,6 +4,10 @@ from .forms import StudentForm
 from rest_framework import viewsets, status
 from rest_framework.response import Response
 from .serializers import StudentPreRegisterSerializer, StudentRegisterSerializer
+from django.urls import reverse_lazy
+
+from django.views.generic import ListView
+from django.views.generic.edit import CreateView, UpdateView, DeleteView
 
 class StudentPreRegisterViewSet(viewsets.ModelViewSet):
     queryset = Student.objects.all()
@@ -14,8 +18,8 @@ class StudentRegisterViewSet(viewsets.ModelViewSet):
     serializer_class = StudentRegisterSerializer
 
     def get_object(self):
-        matricula = self.request.data['matricula']
-        student = get_object_or_404(Student, matricula=matricula)
+        student_id = self.request.data['student_id']
+        student = get_object_or_404(Student, student_id=student_id)
         return student
     
     def create(self, request, *args, **kwargs):
@@ -29,36 +33,24 @@ class StudentRegisterViewSet(viewsets.ModelViewSet):
 class StudentForm(StudentForm):
     class Meta:
         model = Student
-        fields = ['nome', 'matricula', 'email', 'senha']
+        fields = ['name', 'student_id', 'email', 'password']
 
-def list_students(request):
-    students = Student.objects.all()
-    return render(request, 'students.html', {'students': students})
+class StudentList(ListView):
+    model = Student
 
-def create_student(request):
-    form = StudentForm(request.POST or None)
+class StudentCreate(CreateView):
+    model = Student
+    fields = ['name','student_id','email','password']
 
-    if form.is_valid():
-        form.save()
-        return redirect('list_students')
-    
-    return render(request, 'student-form.html', {'form': form})
+    success_url = reverse_lazy('list_students')
 
-def update_student(request, id):
-    student = Student.objects.get(id=id)
-    form = StudentForm(request.POST or None, instance=student)
+class StudentUpdate(UpdateView):
+    model = Student
+    fields = ['name','email','password']
 
-    if form.is_valid():
-        form.save()
-        return redirect('list_students')
+    success_url = reverse_lazy('list_students')
 
-    return render(request, 'student-form.html', {'form': form, 'student': student})
+class StudentDelete(DeleteView):
+    model = Student
 
-def delete_student(request, id):
-    student = Student.objects.get(id=id)
-
-    if request.method == 'POST':
-        student.delete()
-        return redirect('list_students')
-
-    return render(request, 'confirm_delete.html', {'student': student})
+    success_url = reverse_lazy('list_students')
