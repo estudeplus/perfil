@@ -12,3 +12,15 @@ class StudentRegisterSerializer(serializers.ModelSerializer):
 
         model = Student
         fields = ('student_id', 'name', 'email', 'password')
+
+class StudentSerializer(serializers.ModelSerializer):
+    class Meta:
+
+        model = Student
+        fields = '__all__'
+
+class StudentUpdateSerializer(serializers.ModelSerializer):
+    class Meta:
+
+        model = Student
+        fields = ('name', 'email', 'password')
