@@ -1,20 +1,58 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from .models import Student
+from .models import Student, InstitutionalEmail
 from .forms import StudentForm
 from rest_framework.generics import GenericAPIView
 from rest_framework.mixins import UpdateModelMixin
 from rest_framework import viewsets, status
 from rest_framework.decorators import action
 from rest_framework.response import Response
-from .serializers import StudentPreRegisterSerializer, StudentRegisterSerializer, StudentSerializer, StudentUpdateSerializer
+from .serializers import StudentPreRegisterSerializer, StudentRegisterSerializer, StudentSerializer, StudentUpdateSerializer, InstitutionalEmailSerializer
 from django.urls import reverse_lazy
+import urllib
+
+import requests
+from requests.exceptions import RequestException
 
 from django.views.generic import ListView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 
+# def send_email(email):
+#     # URL = 
+#     data = {
+#         'assunto': 'Assunto qualquer',
+#         'email': email,
+#         'corpo': 'huidhisadhisauhd '
+#     }
+
+#     print(data)
+
+    # try:
+    #     request.post(URL, json=data)
+    # except ValueError as e:
+    #     return Response(e.args[0],status.HTTP_400_BAD_REQUEST)
+
+
+def save_address():
+    email = Student.objects.values('student_id')
+    p = InstitutionalEmail()
+    for item in email:
+        data = ""
+        data = item.get("student_id", "")
+        data = data + "@aluno.unb.br"
+        p.address_email = data
+        p.save()
+
 class StudentPreRegisterViewSet(viewsets.ModelViewSet):
     queryset = Student.objects.all()
     serializer_class = StudentPreRegisterSerializer
+
+    def create(self, request, *args, **kwargs):
+        serializer = StudentPreRegisterSerializer(data=request.data) 
+
+        if serializer.is_valid():
+            serializer.save()
+            save_address()
+            return Response(serializer.data, status.HTTP_201_CREATED)
 
 class StudentRegisterViewSet(viewsets.ModelViewSet):
     queryset = Student.objects.all()
@@ -31,6 +69,7 @@ class StudentRegisterViewSet(viewsets.ModelViewSet):
 
         if serializer.is_valid():
             serializer.save()
+            save_address()
             return Response(serializer.data, status.HTTP_201_CREATED)
 
 class StudentViewSet(viewsets.ViewSet):
@@ -74,6 +113,13 @@ class StudentViewSet(viewsets.ViewSet):
         student = get_object_or_404(queryset, pk=pk)
         self.perform_destroy(student)
         return Response(status=status.HTTP_204_NO_CONTENT)
+
+
+class InstitutionalEmailViewSet(viewsets.ModelViewSet):
+
+    queryset = InstitutionalEmail.objects.all()
+    serializer_class = InstitutionalEmailSerializer
+
 
 class StudentForm(StudentForm):
     class Meta:

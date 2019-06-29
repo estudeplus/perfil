@@ -9,13 +9,8 @@
 <body>
     <h1>Pagina inicial</h1>
     <ul>
-        {% for student in object_list %}
-            <a href="{% url 'update_student' student.id %}">
-                <li>{{ student.name }}</li>
-            </a>
-    {% endfor %}
+        
     </ul>
 
-    <a href="{% url 'create_students' %}">New Student</a>
 </body>
 </html>
