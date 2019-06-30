@@ -9,9 +9,9 @@
 <body>
     <h1>Pagina inicial</h1>
     <ul>
-        {% for student in students %}
+        {% for student in object_list %}
             <a href="{% url 'update_student' student.id %}">
-                <li>{{ student.nome }}</li>
+                <li>{{ student.name }}</li>
             </a>
     {% endfor %}
     </ul>
