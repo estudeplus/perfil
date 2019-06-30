@@ -29,4 +29,4 @@ class InstitutionalEmailSerializer(serializers.ModelSerializer):
     class Meta:
 
         model = InstitutionalEmail
-        fields = ('address_email',)
+        fields = ('address_email', 'title_email', 'body_email')

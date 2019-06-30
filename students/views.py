@@ -8,7 +8,6 @@ from rest_framework.decorators import action
 from rest_framework.response import Response
 from .serializers import StudentPreRegisterSerializer, StudentRegisterSerializer, StudentSerializer, StudentUpdateSerializer, InstitutionalEmailSerializer
 from django.urls import reverse_lazy
-import urllib
 
 import requests
 from requests.exceptions import RequestException
@@ -16,31 +15,23 @@ from requests.exceptions import RequestException
 from django.views.generic import ListView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 
-# def send_email(email):
-#     # URL = 
-#     data = {
-#         'assunto': 'Assunto qualquer',
-#         'email': email,
-#         'corpo': 'huidhisadhisauhd '
-#     }
-
-#     print(data)
-
-    # try:
-    #     request.post(URL, json=data)
-    # except ValueError as e:
-    #     return Response(e.args[0],status.HTTP_400_BAD_REQUEST)
-
-
 def save_address():
     email = Student.objects.values('student_id')
+    id = Student.objects.values('id')
     p = InstitutionalEmail()
     for item in email:
         data = ""
         data = item.get("student_id", "")
         data = data + "@aluno.unb.br"
         p.address_email = data
-        p.save()
+    
+    for item in id:
+        data = ""
+        data = item.get("id", "")
+        data = "http://localhost:8002/students/" + str(data)
+        p.body_email = data
+    p.save()
+
 
 class StudentPreRegisterViewSet(viewsets.ModelViewSet):
     queryset = Student.objects.all()
@@ -69,7 +60,6 @@ class StudentRegisterViewSet(viewsets.ModelViewSet):
 
         if serializer.is_valid():
             serializer.save()
-            save_address()
             return Response(serializer.data, status.HTTP_201_CREATED)
 
 class StudentViewSet(viewsets.ViewSet):
