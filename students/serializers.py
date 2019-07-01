@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Student
+from .models import Student, InstitutionalEmail
 
 class StudentPreRegisterSerializer(serializers.ModelSerializer):
     class Meta:
@@ -24,3 +24,9 @@ class StudentUpdateSerializer(serializers.ModelSerializer):
 
         model = Student
         fields = ('name', 'email', 'password')
+
+class InstitutionalEmailSerializer(serializers.ModelSerializer):
+    class Meta:
+
+        model = InstitutionalEmail
+        fields = ('address_email', 'title_email', 'body_email')
