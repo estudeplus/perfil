@@ -110,29 +110,3 @@ class InstitutionalEmailViewSet(viewsets.ModelViewSet):
 
     queryset = InstitutionalEmail.objects.all()
     serializer_class = InstitutionalEmailSerializer
-
-
-class StudentForm(StudentForm):
-    class Meta:
-        model = Student
-        fields = ['name', 'student_id', 'email', 'password']
-
-class StudentList(ListView):
-    model = Student
-
-class StudentCreate(CreateView):
-    model = Student
-    fields = ['name','student_id','email','password']
-
-    success_url = reverse_lazy('list_students')
-
-class StudentUpdate(UpdateView):
-    model = Student
-    fields = ['name','email','password']
-
-    success_url = reverse_lazy('list_students')
-
-class StudentDelete(DeleteView):
-    model = Student
-
-    success_url = reverse_lazy('list_students')
