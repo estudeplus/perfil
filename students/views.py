@@ -15,22 +15,23 @@ from requests.exceptions import RequestException
 from django.views.generic import ListView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 
-def save_address():
-    email = Student.objects.values('student_id')
-    id = Student.objects.values('id')
-    p = InstitutionalEmail()
-    for item in email:
-        data = ""
-        data = item.get("student_id", "")
-        data = data + "@aluno.unb.br"
-        p.address_email = data
-    
-    for item in id:
-        data = ""
-        data = item.get("id", "")
-        data = "http://localhost:8002/students/" + str(data)
-        p.body_email = data
-    p.save()
+class TableEmail():
+    def save_table_email():
+        email = Student.objects.values('student_id')
+        id = Student.objects.values('id')
+        p = InstitutionalEmail()
+        for item in email:
+            data = ""
+            data = item.get("student_id", "")
+            data = data + "@aluno.unb.br"
+            p.address_email = data
+        
+        for item in id:
+            data = ""
+            data = item.get("id", "")
+            data = "http://localhost:8002/students/" + str(data)
+            p.body_email = data
+        p.save()
 
 
 class StudentPreRegisterViewSet(viewsets.ModelViewSet):
@@ -42,7 +43,7 @@ class StudentPreRegisterViewSet(viewsets.ModelViewSet):
 
         if serializer.is_valid():
             serializer.save()
-            save_address()
+            TableEmail.save_table_email()
             return Response(serializer.data, status.HTTP_201_CREATED)
 
 class StudentRegisterViewSet(viewsets.ModelViewSet):
